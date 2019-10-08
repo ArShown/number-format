@@ -1,0 +1,6 @@
+--colors
+--growl
+--require babel-polyfill
+--require @babel/register
+--reporter spec
+test/**/*.test.*
