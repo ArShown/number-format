@@ -3,7 +3,7 @@ import { decodeToObjByStr, combineToResult } from './utils';
 
 const number_format = function (number, formatStr = '0.2sr') {
   /* 檢查是不是建構式方式 */
-  const isConstructor = this instanceof dollar;
+  const isConstructor = this instanceof number_format;
 
   const _self = isConstructor ? this : {};
 
