@@ -1,9 +1,12 @@
-import { pipe, split, head, isEmpty } from 'ramda';
+import { pipe, split, head, match, defaultTo, isEmpty } from 'ramda';
 
 const matchIntegerLength = formatStr => {
   const matchInteger = pipe(
     split('.'),
-    head
+    head,
+    match(/\-?\d+/g),
+    head,
+    defaultTo('')
   )(formatStr);
   return isEmpty(matchInteger) ? Infinity : parseInt(matchInteger, 10);
 };
