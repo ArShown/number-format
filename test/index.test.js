@@ -37,11 +37,42 @@ describe('number_format', () => {
     });
   });
 
+  describe('c: 逗號', () => {
+    it("(123456.789, '0c') => '123,456'", () => {
+      expect(number_format(123456.789, '0c')).to.be.eql('123,456');
+    });
+    it("(123456.789, '7c') => '0,123,456'", () => {
+      expect(number_format(123456.789, '7c')).to.be.eql('0,123,456');
+    });
+    it("(123456.789, '-4.2c') => '3,456.78'", () => {
+      expect(number_format(123456.789, '-4.2c')).to.be.eql('3,456.78');
+    });
+    it("(123456.789, '.4c') => '.78'", () => {
+      expect(number_format(123456.789, '.4c')).to.be.eql('.7890');
+    });
+    it("(-1000.789, '0c') => '-1,000'", () => {
+      expect(number_format(-1000.789, '0c')).to.be.eql('-1,000');
+    });
+    it("(-123456.789, '-4c') => '-1,000'", () => {
+      expect(number_format(-123456.789, '-4c')).to.be.eql('3,456');
+    });
+  });
+
   describe('建構式方式', () => {
-    it("(123456.789, '0') => '123456'", () => {
-      const number = new number_format(123456.789, '0');
+    let number;
+    before(() => {
+      number = new number_format(123456.789, '0');
+    });
+    it("取得結果", () => {
       expect(number.value()).to.be.eql('123456');
+    });
+    it("變更格式： 0.4", () => {
       expect(number.format('0.4')).to.be.eql('123456.7890');
+    });
+    it("變更格式： 4c.2", () => {
+      expect(number.format('4c.2')).to.be.eql('123,456.78');
+      expect(number.format('c4.2')).to.be.eql('123,456.78');
+      expect(number.format('4.2c')).to.be.eql('123,456.78');
     });
   });
 });
