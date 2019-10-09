@@ -4,10 +4,13 @@ import numberToDecimal from './number-to-decimal';
 import paddingRight from './padding-right';
 import paddingLeft from './padding-left';
 import commaString from './comma-string';
+import { computeUnit } from './transfer-unit';
 
 const combineToResult = formatObject => {
   let {
     origin: { number, integer, decimal },
+    /* 單位 */
+    unit,
     /* 整數位數 */
     integerLength,
     /* 小數點位數 */
@@ -17,6 +20,13 @@ const combineToResult = formatObject => {
     /* c 逗號 */
     isComma
   } = formatObject;
+
+  /* 處理單位 */
+  if (unit !== null) {
+    /* 更新資料 */
+    [integer, decimal] = computeUnit(unit, number);
+    number = `${integer}.${decimal}`;
+  }
 
   /* 處理四捨五入 */
   if (isRound) {
@@ -37,11 +47,11 @@ const combineToResult = formatObject => {
       ? ''
       : /* 處理正負數 */
       integerLength >= 0
-      ? /* 處理補零 */
+        ? /* 處理補零 */
         integerLength < integer.length
-        ? integer
-        : paddingLeft(integerLength, integer)
-      : takeLast(Math.abs(integerLength), integer);
+          ? integer
+          : paddingLeft(integerLength, integer)
+        : takeLast(Math.abs(integerLength), integer);
 
   /* 處理小數點後數字 */
   const compileDecimal =

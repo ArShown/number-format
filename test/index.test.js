@@ -39,6 +39,12 @@ describe('number_format', () => {
     it("(123.456, '') => ''", () => {
       expect(number_format(123.456, '')).to.be.eql('');
     });
+    it("(123.456, '.-4') => ''", () => {
+      expect(number_format(123.456, '.-4')).to.be.eql('');
+    });
+    it("(123.456, '4.-4') => '0123'", () => {
+      expect(number_format(123.456, '4.-4')).to.be.eql('0123');
+    });
   });
 
   describe('r : 四捨五入', () => {
@@ -71,6 +77,36 @@ describe('number_format', () => {
     });
     it("(-123456.789, '-4cr') => '3,457'", () => {
       expect(number_format(-123456.789, '-4cr')).to.be.eql('3,457');
+    });
+  });
+
+  describe('k: 千', () => {
+    it("(123456.789, '0k') => '123'", () => {
+      expect(number_format(123456.789, '0k')).to.be.eql('123');
+    });
+    it("(123456789.123, '0.2k') => '123456.78'", () => {
+      expect(number_format(123456789.123, '0.2k')).to.be.eql('123456.78');
+    });
+    it("(123456789, '-4kc') => '3,456'", () => {
+      expect(number_format(123456789, '-4kc')).to.be.eql('3,456');
+    });
+    it("(123456789, 'c-4k') => '3,456'", () => {
+      expect(number_format(123456789, 'c-4k')).to.be.eql('3,456');
+    });
+    it("(123456789, '-4ck') => '3,456'", () => {
+      expect(number_format(123456789, '-4ck')).to.be.eql('3,456');
+    });
+    it("(123456789, 'ck-4') => '3,456'", () => {
+      expect(number_format(123456789, 'ck-4')).to.be.eql('3,456');
+    });
+    it("(123456789.123, '-3kr') => '457'", () => {
+      expect(number_format(123456789.123, '-3kr')).to.be.eql('457');
+    });
+    it("(123456789.123, 'r-3k') => '457'", () => {
+      expect(number_format(123456789.123, 'r-3k')).to.be.eql('457');
+    });
+    it("(123456.789, 'k') => ''", () => {
+      expect(number_format(123456.789, 'k')).to.be.eql('');
     });
   });
 
