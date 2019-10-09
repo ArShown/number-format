@@ -22,15 +22,15 @@ export const matchUnitMillion = formatStr => match(/m/)(formatStr).length > 0;
 export const matchUnitBillion = formatStr => match(/b/)(formatStr).length > 0;
 
 /**
- * 解析單位: A
- * @param {string} formatStr
- * @return {boolean}
- */
-export const matchUnitFullAll = formatStr => match(/A/)(formatStr).length > 0;
-
-/**
  * 解析單位: a
  * @param {string} formatStr
  * @return {boolean}
  */
 export const matchUnitAll = formatStr => match(/a/)(formatStr).length > 0;
+
+/**
+ * 解析單位: g
+ * @param {string} formatStr
+ * @return {boolean}
+ */
+export const matchUnitGreat = formatStr => match(/g/)(formatStr).length > 0;

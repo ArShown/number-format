@@ -22,11 +22,11 @@ const combineToResult = formatObject => {
   } = formatObject;
 
   /* 處理單位 */
+  let greatUnit = '';
   if (unit !== null) {
     /* 更新資料 */
-    [integer, decimal] = computeUnit(unit, number);
+    [integer, decimal, greatUnit = ''] = computeUnit(unit, number);
     number = `${integer}.${decimal}`;
-    console.log(integer, decimal);
   }
 
   /* 處理四捨五入 */
@@ -65,6 +65,7 @@ const combineToResult = formatObject => {
   return join('', [
     /* 處理整數 */
     isComma ? commaString(compileInteger) : compileInteger,
+    greatUnit,
     /* 小數點 */
     compileDecimal !== '' ? '.' + compileDecimal : ''
   ]);
