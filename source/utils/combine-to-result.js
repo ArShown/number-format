@@ -26,6 +26,7 @@ const combineToResult = formatObject => {
     /* 更新資料 */
     [integer, decimal] = computeUnit(unit, number);
     number = `${integer}.${decimal}`;
+    console.log(integer, decimal);
   }
 
   /* 處理四捨五入 */
@@ -47,11 +48,11 @@ const combineToResult = formatObject => {
       ? ''
       : /* 處理正負數 */
       integerLength >= 0
-        ? /* 處理補零 */
+      ? /* 處理補零 */
         integerLength < integer.length
-          ? integer
-          : paddingLeft(integerLength, integer)
-        : takeLast(Math.abs(integerLength), integer);
+        ? integer
+        : paddingLeft(integerLength, integer)
+      : takeLast(Math.abs(integerLength), integer);
 
   /* 處理小數點後數字 */
   const compileDecimal =

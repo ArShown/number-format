@@ -1,5 +1,19 @@
-import { findIndex, equals, defaultTo, prop, divide, split, toString } from 'ramda';
-import matchUnitThousand from './match-unit-thousand';
+import {
+  findIndex,
+  equals,
+  defaultTo,
+  prop,
+  divide,
+  split,
+  toString
+} from 'ramda';
+import {
+  matchUnitThousand,
+  matchUnitMillion,
+  matchUnitBillion,
+  matchUnitFullAll,
+  matchUnitAll
+} from './match-unit';
 
 const unitConstant = ['A', 'a', 'k', 'm', 'b'];
 
@@ -12,15 +26,15 @@ const unitConstant = ['A', 'a', 'k', 'm', 'b'];
 export const getUnit = formatStr => {
   const matchIdx = findIndex(equals(true))([
     /* A */
-    false,
+    matchUnitFullAll(formatStr),
     /* a */
-    false,
+    matchUnitAll(formatStr),
     /* 千 */
     matchUnitThousand(formatStr),
-    /* 十億 */
-    false,
     /* 百萬 */
-    false
+    matchUnitMillion(formatStr),
+    /* 十億 */
+    matchUnitBillion(formatStr)
   ]);
 
   return defaultTo(null, prop(matchIdx, unitConstant));
@@ -38,5 +52,9 @@ export const computeUnit = (unit, numberStr) => {
   switch (unit) {
     case 'k':
       return split('.', toString(divide(+numberStr, 1000)));
+    case 'm':
+      return split('.', toString(divide(+numberStr, 1000000)));
+    case 'b':
+      return split('.', toString(divide(+numberStr, 1000000000)));
   }
 };
