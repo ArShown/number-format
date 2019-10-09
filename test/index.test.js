@@ -19,6 +19,7 @@ describe('number_format', () => {
       expect(number_format(123456.789, '')).to.be.eql('');
     });
   });
+
   describe('小數', () => {
     it("(123456.789, '.0') => '.789'", () => {
       expect(number_format(123456.789, '.0')).to.be.eql('.789');
@@ -34,6 +35,21 @@ describe('number_format', () => {
     });
     it("(123.456, '4.4') => '0123.4560'", () => {
       expect(number_format(123.456, '4.4')).to.be.eql('0123.4560');
+    });
+    it("(123.456, '') => ''", () => {
+      expect(number_format(123.456, '')).to.be.eql('');
+    });
+  });
+
+  describe('r : 四捨五入', () => {
+    it("(456.78, '0.1r') => 456.8", () => {
+      expect(number_format(456.78, '0.1r')).to.be.eql('456.8');
+    });
+    it("(123456.789, '0rc') => 123,457", () => {
+      expect(number_format(123456.789, '0rc')).to.be.eql('123,457');
+    });
+    it("(-456.78, '0r') => -457", () => {
+      expect(number_format(-456.78, '0r')).to.be.eql('-457');
     });
   });
 
@@ -53,8 +69,8 @@ describe('number_format', () => {
     it("(-1000.789, '0c') => '-1,000'", () => {
       expect(number_format(-1000.789, '0c')).to.be.eql('-1,000');
     });
-    it("(-123456.789, '-4c') => '-1,000'", () => {
-      expect(number_format(-123456.789, '-4c')).to.be.eql('3,456');
+    it("(-123456.789, '-4cr') => '3,457'", () => {
+      expect(number_format(-123456.789, '-4cr')).to.be.eql('3,457');
     });
   });
 
@@ -63,13 +79,13 @@ describe('number_format', () => {
     before(() => {
       number = new number_format(123456.789, '0');
     });
-    it("取得結果", () => {
+    it('取得結果', () => {
       expect(number.value()).to.be.eql('123456');
     });
-    it("變更格式： 0.4", () => {
+    it('變更格式： 0.4', () => {
       expect(number.format('0.4')).to.be.eql('123456.7890');
     });
-    it("變更格式： 4c.2", () => {
+    it('變更格式： 4c.2', () => {
       expect(number.format('4c.2')).to.be.eql('123,456.78');
       expect(number.format('c4.2')).to.be.eql('123,456.78');
       expect(number.format('4.2c')).to.be.eql('123,456.78');
