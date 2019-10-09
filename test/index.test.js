@@ -90,14 +90,23 @@ describe('number_format', () => {
     it("(123456789, '-4kc') => '3,456'", () => {
       expect(number_format(123456789, '-4kc')).to.be.eql('3,456');
     });
+    it("(123456789, 'c-4k') => '3,456'", () => {
+      expect(number_format(123456789, 'c-4k')).to.be.eql('3,456');
+    });
+    it("(123456789, '-4ck') => '3,456'", () => {
+      expect(number_format(123456789, '-4ck')).to.be.eql('3,456');
+    });
+    it("(123456789, 'ck-4') => '3,456'", () => {
+      expect(number_format(123456789, 'ck-4')).to.be.eql('3,456');
+    });
     it("(123456789.123, '-3kr') => '457'", () => {
       expect(number_format(123456789.123, '-3kr')).to.be.eql('457');
     });
+    it("(123456789.123, 'r-3k') => '457'", () => {
+      expect(number_format(123456789.123, 'r-3k')).to.be.eql('457');
+    });
     it("(123456.789, 'k') => ''", () => {
       expect(number_format(123456.789, 'k')).to.be.eql('');
-    });
-    it("(123456.789, '5k2k') => ''", () => {
-      expect(number_format(123456.789, '5k2k')).to.be.eql('00123123');
     });
   });
 

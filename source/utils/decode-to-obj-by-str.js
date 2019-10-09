@@ -5,6 +5,7 @@ import matchDecimalLength from './match-decimal-length';
 import matchIntegerLength from './match-integer-length';
 import matchRounding from './match-rounding';
 import matchComma from './match-comma';
+import { getUnit } from './transfer-unit';
 
 /* 把formatStr解析成要轉換的格式條件 */
 const decodeToObjByStr = formatStr => number => {
@@ -17,6 +18,8 @@ const decodeToObjByStr = formatStr => number => {
 
   return {
     origin,
+    /* 單位：unitConstant｜null */
+    unit: getUnit(formatStr),
     /* 整數位數 */
     integerLength: matchIntegerLength(formatStr),
     /* 小數點位數 */
