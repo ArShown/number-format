@@ -50,6 +50,12 @@ describe('number_format', () => {
     it("(123456.789, '.4c') => '.78'", () => {
       expect(number_format(123456.789, '.4c')).to.be.eql('.7890');
     });
+    it("(-1000.789, '0c') => '-1,000'", () => {
+      expect(number_format(-1000.789, '0c')).to.be.eql('-1,000');
+    });
+    it("(-123456.789, '-4c') => '-1,000'", () => {
+      expect(number_format(-123456.789, '-4c')).to.be.eql('3,456');
+    });
   });
 
   describe('建構式方式', () => {
