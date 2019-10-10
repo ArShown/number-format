@@ -22,9 +22,10 @@ const combineToResult = formatObject => {
   } = formatObject;
 
   /* 處理單位 */
+  let greatUnit = '';
   if (unit !== null) {
     /* 更新資料 */
-    [integer, decimal] = computeUnit(unit, number);
+    [integer, decimal, greatUnit = ''] = computeUnit(unit, number);
     number = `${integer}.${decimal}`;
   }
 
@@ -47,11 +48,11 @@ const combineToResult = formatObject => {
       ? ''
       : /* 處理正負數 */
       integerLength >= 0
-        ? /* 處理補零 */
+      ? /* 處理補零 */
         integerLength < integer.length
-          ? integer
-          : paddingLeft(integerLength, integer)
-        : takeLast(Math.abs(integerLength), integer);
+        ? integer
+        : paddingLeft(integerLength, integer)
+      : takeLast(Math.abs(integerLength), integer);
 
   /* 處理小數點後數字 */
   const compileDecimal =
@@ -64,6 +65,7 @@ const combineToResult = formatObject => {
   return join('', [
     /* 處理整數 */
     isComma ? commaString(compileInteger) : compileInteger,
+    greatUnit,
     /* 小數點 */
     compileDecimal !== '' ? '.' + compileDecimal : ''
   ]);

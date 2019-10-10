@@ -110,6 +110,70 @@ describe('number_format', () => {
     });
   });
 
+  describe.only('m: 百萬', () => {
+    it("(123456.789, '0m') => '0'", () => {
+      expect(number_format(123456.789, '0m')).to.be.eql('0');
+    });
+
+    it("(1123456.789, '0m') => '1'", () => {
+      expect(number_format(1123456.789, '0m')).to.be.eql('1');
+    });
+
+    it("(123456789, '0mc') => '1,234'", () => {
+      expect(number_format(1234567890, '0mc')).to.be.eql('1,234');
+    });
+
+    it("(123456789, '0mcr') => '1,235'", () => {
+      expect(number_format(1234567890, '0mcr')).to.be.eql('1,235');
+    });
+
+    it("(123456789, 'mc0r') => '1,235'", () => {
+      expect(number_format(1234567890, 'mc0r')).to.be.eql('1,235');
+    });
+
+    it("(123456.789, '0.4m') => '0.1234'", () => {
+      expect(number_format(123456.789, '0.4m')).to.be.eql('0.1234');
+    });
+
+    it("(1123456.789, '1.4m') => '0.1234'", () => {
+      expect(number_format(1123456.789, '1.4m')).to.be.eql('1.1234');
+    });
+
+    it("(123, '0.8m') => '0.00012300'", () => {
+      expect(number_format(123, '0.8m')).to.be.eql('0.00012300');
+    });
+
+    it("(123, '.8m') => '.00012300'", () => {
+      expect(number_format(123, '.8m')).to.be.eql('.00012300');
+    });
+  });
+
+  describe.only('b: 十億', () => {
+    it("(123456.789, '0b') => '0'", () => {
+      expect(number_format(123456.789, '0b')).to.be.eql('0');
+    });
+
+    it("(123456000.789, '0b') => '0'", () => {
+      expect(number_format(123456000.789, '0b')).to.be.eql('0');
+    });
+
+    it("(1123456000.789, '0b') => '1'", () => {
+      expect(number_format(1123456000.789, '0b')).to.be.eql('1');
+    });
+
+    it("(1234567890000, '0bc') => '1,234'", () => {
+      expect(number_format(1234567890000, '0bc')).to.be.eql('1,234');
+    });
+
+    it("(1234567890000, 'r0bc') => '1,235'", () => {
+      expect(number_format(1234567890000, 'r0bc')).to.be.eql('1,235');
+    });
+
+    it("(123000, '0.8b') => '0.00012300'", () => {
+      expect(number_format(123000, '0.8b')).to.be.eql('0.00012300');
+    });
+  });
+
   describe('建構式方式', () => {
     let number;
     before(() => {

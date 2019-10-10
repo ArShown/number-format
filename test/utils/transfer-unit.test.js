@@ -24,23 +24,23 @@ describe('transfer-unit', () => {
   });
 
   describe('#computeUnit', () => {
-    it('計算: thousand 回傳 [integer, decimal]', () => {
-      expect(computeUnit('k','123456')).to.be.eql([
-        '123',
-        '456'
-      ]);
-      expect(computeUnit('k','123456.789')).to.be.eql([
-        '123',
-        '456789'
-      ]);
-      expect(computeUnit('k','123')).to.be.eql([
-        '0',
-        '123'
-      ]);
-      expect(computeUnit('k','10')).to.be.eql([
-        '0',
-        '01'
-      ]);
+    it('計算: k : thousand 回傳 [integer, decimal]', () => {
+      expect(computeUnit('k', '123456')).to.be.eql(['123', '456']);
+      expect(computeUnit('k', '123456.789')).to.be.eql(['123', '456789']);
+      expect(computeUnit('k', '123')).to.be.eql(['0', '123']);
+      expect(computeUnit('k', '10')).to.be.eql(['0', '01']);
+    });
+
+    it('計算: m: million 回傳 [integer, decimal]', () => {
+      expect(computeUnit('m', '123456')).to.be.eql(['0', '123456']);
+      expect(computeUnit('m', '123456789')).to.be.eql(['123', '456789']);
+      expect(computeUnit('m', '123')).to.be.eql(['0', '000123']);
+    });
+
+    it('計算: b : billion 回傳 [integer, decimal]', () => {
+      expect(computeUnit('b', '123456000')).to.be.eql(['0', '123456']);
+      expect(computeUnit('b', '123456789000')).to.be.eql(['123', '456789']);
+      expect(computeUnit('b', '123000')).to.be.eql(['0', '000123']);
     });
   });
 });

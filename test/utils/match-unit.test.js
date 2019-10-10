@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import matchUnitThousand from '../../source/utils/match-unit-thousand';
+import { matchUnitThousand } from '../../source/utils/match-unit';
 
 describe('matchUnitThousand', () => {
   it('解析單位：千', () => {

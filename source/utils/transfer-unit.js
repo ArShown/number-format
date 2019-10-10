@@ -1,7 +1,22 @@
-import { findIndex, equals, defaultTo, prop, divide, split, toString } from 'ramda';
-import matchUnitThousand from './match-unit-thousand';
+import {
+  findIndex,
+  equals,
+  defaultTo,
+  prop,
+  divide,
+  split,
+  contains,
+  toString
+} from 'ramda';
+import {
+  matchUnitThousand,
+  matchUnitMillion,
+  matchUnitBillion,
+  matchUnitAll,
+  matchUnitGreat
+} from './match-unit';
 
-const unitConstant = ['A', 'a', 'k', 'm', 'b'];
+const unitConstant = ['a', 'g', 'k', 'm', 'b'];
 
 /**
  * 解析單位
@@ -11,16 +26,16 @@ const unitConstant = ['A', 'a', 'k', 'm', 'b'];
  */
 export const getUnit = formatStr => {
   const matchIdx = findIndex(equals(true))([
-    /* A */
-    false,
     /* a */
-    false,
+    matchUnitAll(formatStr),
+    /* g */
+    matchUnitGreat(formatStr),
     /* 千 */
     matchUnitThousand(formatStr),
-    /* 十億 */
-    false,
     /* 百萬 */
-    false
+    matchUnitMillion(formatStr),
+    /* 十億 */
+    matchUnitBillion(formatStr)
   ]);
 
   return defaultTo(null, prop(matchIdx, unitConstant));
@@ -38,5 +53,27 @@ export const computeUnit = (unit, numberStr) => {
   switch (unit) {
     case 'k':
       return split('.', toString(divide(+numberStr, 1000)));
+    case 'm':
+      return split('.', toString(divide(+numberStr, 1000000)));
+    case 'b':
+      return split('.', toString(divide(+numberStr, 1000000000)));
+    case 'g':
+      if (+numberStr > 1000000000)
+        return [
+          ...computeUnit('b', numberStr),
+          ...(computeUnit('b', numberStr).length === 2 ? [] : ['0']),
+          'B'
+        ];
+      if (+numberStr > 1000000)
+        return [
+          ...computeUnit('m', numberStr),
+          ...(computeUnit('m', numberStr).length === 2 ? [] : ['0']),
+          'M'
+        ];
+      return [
+        ...computeUnit('k', numberStr),
+        ...(computeUnit('k', numberStr).length === 2 ? [] : ['0']),
+        'K'
+      ];
   }
 };
