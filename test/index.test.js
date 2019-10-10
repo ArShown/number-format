@@ -45,6 +45,12 @@ describe('number_format', () => {
     it("(123.456, '4.-4') => '0123'", () => {
       expect(number_format(123.456, '4.-4')).to.be.eql('0123');
     });
+    it("(100, '.0') => ''", () => {
+      expect(number_format(100, '.0')).to.be.eql('');
+    });
+    it("(100, '0.2') => ''", () => {
+      expect(number_format(100, '0.2')).to.be.eql('100.00');
+    });
   });
 
   describe('r : 四捨五入', () => {
@@ -201,7 +207,7 @@ describe('number_format', () => {
     });
   });
 
-  describe('a : 所有單位', () => {
+  describe('a : 換算最大之後的所有單位', () => {
     it("(123456789.123, 'a') => '123M 456K'", () => {
       expect(number_format(123456789.123, 'a')).to.be.eql('123M 456K');
     });
