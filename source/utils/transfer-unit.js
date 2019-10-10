@@ -6,7 +6,11 @@ import {
   divide,
   split,
   contains,
-  toString
+  toString,
+  ifElse,
+  length,
+  identity,
+  append
 } from 'ramda';
 import {
   matchUnitThousand,
@@ -60,19 +64,16 @@ export const computeUnit = (unit, numberStr) => {
     case 'g':
       if (+numberStr > 1000000000)
         return [
-          ...computeUnit('b', numberStr),
-          ...(computeUnit('b', numberStr).length === 2 ? [] : ['0']),
+          ...ifElse(pipe(length, equals(2)), identity, append('0'))(computeUnit('b', numberStr)),
           'B'
         ];
       if (+numberStr > 1000000)
         return [
-          ...computeUnit('m', numberStr),
-          ...(computeUnit('m', numberStr).length === 2 ? [] : ['0']),
+          ...ifElse(pipe(length, equals(2)), identity, append('0'))(computeUnit('m', numberStr)),
           'M'
         ];
       return [
-        ...computeUnit('k', numberStr),
-        ...(computeUnit('k', numberStr).length === 2 ? [] : ['0']),
+        ...ifElse(pipe(length, equals(2)), identity, append('0'))(computeUnit('k', numberStr)),
         'K'
       ];
   }

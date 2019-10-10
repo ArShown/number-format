@@ -110,7 +110,7 @@ describe('number_format', () => {
     });
   });
 
-  describe.only('m: 百萬', () => {
+  describe('m: 百萬', () => {
     it("(123456.789, '0m') => '0'", () => {
       expect(number_format(123456.789, '0m')).to.be.eql('0');
     });
@@ -148,7 +148,7 @@ describe('number_format', () => {
     });
   });
 
-  describe.only('b: 十億', () => {
+  describe('b: 十億', () => {
     it("(123456.789, '0b') => '0'", () => {
       expect(number_format(123456.789, '0b')).to.be.eql('0');
     });

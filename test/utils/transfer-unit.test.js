@@ -8,12 +8,12 @@ describe('transfer-unit', () => {
       expect(getUnit('k123')).to.be.equal('k');
       expect(getUnit('lll')).to.be.null;
     });
-    it('單位順序: A > a > k > m > b', () => {
+    it('單位順序: a > g > k > m > b', () => {
       expect(getUnit('123k')).to.be.equal('k');
-      expect(getUnit('mg149')).to.be.equal('m');
+      expect(getUnit('mg149')).to.be.equal('g');
       expect(getUnit('100km')).to.be.equal('k');
       expect(getUnit('100bmk')).to.be.equal('k');
-      expect(getUnit('100bmka')).to.be.equal('a');
+      expect(getUnit('100bmkg')).to.be.equal('g');
     });
     it('無定義單位', () => {
       expect(getUnit('lll')).to.be.null;
