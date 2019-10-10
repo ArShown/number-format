@@ -20,6 +20,8 @@ import {
   matchUnitAll,
   matchUnitGreat
 } from './match-unit';
+import numberToInteger from './number-to-integer';
+import numberToDecimal from './number-to-decimal';
 
 const unitConstant = ['a', 'g', 'k', 'm', 'b'];
 
@@ -74,11 +76,23 @@ const _resultCompile = (result, unit = '') => [
 export const computeUnit = (unit, numberStr) => {
   switch (unit) {
     case 'k':
-      return split('.', toString(divide(+numberStr, 1000)));
+      const k = toString(divide(+numberStr, 1000));
+      return [
+        numberToInteger(k),
+        numberToDecimal(k)
+      ];
     case 'm':
-      return split('.', toString(divide(+numberStr, 1000000)));
+      const m = toString(divide(+numberStr, 1000000));
+      return [
+        numberToInteger(m),
+        numberToDecimal(m)
+      ];
     case 'b':
-      return split('.', toString(divide(+numberStr, 1000000000)));
+      const b = toString(divide(+numberStr, 1000000000));
+      return [
+        numberToInteger(b),
+        numberToDecimal(b)
+      ];
     case 'g':
       if (+numberStr > 1000000000)
         return _resultCompile(computeUnit('b', numberStr), 'B');

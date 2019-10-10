@@ -178,6 +178,9 @@ describe('number_format', () => {
     it("(123456.789, '0g') => '123K'", () => {
       expect(number_format(123456.789, '0g')).to.be.eql('123K');
     });
+    it("(100, '0g') => '0K'", () => {
+      expect(number_format(100, '0g')).to.be.eql('0K');
+    });
     it("(123456.789, '0.0g') => '123.456789K'", () => {
       expect(number_format(123456.789, '0.0g')).to.be.eql('123.456789K');
     });
@@ -195,6 +198,18 @@ describe('number_format', () => {
     });
     it("(1234567890000.123, '0.3grc') => '1,234.568B'", () => {
       expect(number_format(1234567890000.123, '0.3grc')).to.be.eql('1,234.568B');
+    });
+  });
+
+  describe('a : 所有單位', () => {
+    it("(123456789.123, 'a') => '123M 456K'", () => {
+      expect(number_format(123456789.123, 'a')).to.be.eql('123M 456K');
+    });
+    it("(123000456789.123, 'a') => '123B 0M 456K'", () => {
+      expect(number_format(123000456789.123, 'a')).to.be.eql('123B 0M 456K');
+    });
+    it("(100, 'a') => '0K'", () => {
+      expect(number_format(100, 'a')).to.be.eql('0K');
     });
   });
 

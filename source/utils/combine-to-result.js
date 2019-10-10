@@ -1,4 +1,4 @@
-import { join, slice, takeLast } from 'ramda';
+import { join, slice, takeLast, clone } from 'ramda';
 import numberToInteger from './number-to-integer';
 import numberToDecimal from './number-to-decimal';
 import paddingRight from './padding-right';
@@ -24,6 +24,43 @@ const combineToResult = formatObject => {
   /* 處理單位 */
   let greatUnit = '';
   if (unit !== null) {
+    if (unit === 'a') {
+      /* 單位如果是 a 要特別處理 */
+      let numberToCount = +clone(number),
+        resultBillion = '',
+        resultMillion = '',
+        resultThousand = '';
+
+      // 先拿 billion
+      if (numberToCount >= 1000000000) {
+        const billion = computeUnit('b', '' + numberToCount);
+        resultBillion = billion[0] !== '0'
+          ? (isComma ? commaString(billion[0]) : billion[0]) + 'B '
+          : '';
+        numberToCount = numberToCount % 1000000000;
+        /* 寫入百萬預設值 */
+        resultMillion = '0M ';
+      }
+
+      if (numberToCount >= 1000000) {
+        // 再拿 million
+        const million = computeUnit('m', '' + numberToCount);
+        resultMillion = million[0] === '0' && resultBillion === ''
+          ? ''
+          : million[0] + 'M ';
+        numberToCount = numberToCount % 1000000;
+      }
+
+      // 再拿 thousand
+      const thousand = computeUnit('k', '' + numberToCount);
+      resultThousand = `${thousand[0]}K`;
+
+      return join('', [
+        resultBillion,
+        resultMillion,
+        resultThousand
+      ]);
+    }
     /* 更新資料 */
     [integer, decimal, greatUnit = ''] = computeUnit(unit, number);
     number = `${integer}${decimal !== '' ? '.' + decimal : ''}`;
