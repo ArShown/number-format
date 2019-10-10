@@ -42,5 +42,13 @@ describe('transfer-unit', () => {
       expect(computeUnit('b', '123456789000')).to.be.eql(['123', '456789']);
       expect(computeUnit('b', '123000')).to.be.eql(['0', '000123']);
     });
+
+    it('計算: g : 自動換算最大單位 [integer, decimal, unit]', () => {
+      expect(computeUnit('g', '123456789000')).to.be.eql(['123', '456789', 'B']);
+      expect(computeUnit('g', '123456000')).to.be.eql(['123', '456', 'M']);
+      expect(computeUnit('g', '123000')).to.be.eql(['123', '', 'K']);
+      expect(computeUnit('g', '100')).to.be.eql(['0', '1', 'K']);
+      expect(computeUnit('g', '0.5')).to.be.eql(['0', '0005', 'K']);
+    });
   });
 });

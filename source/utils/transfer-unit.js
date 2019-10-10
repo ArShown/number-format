@@ -10,7 +10,8 @@ import {
   ifElse,
   length,
   identity,
-  append
+  append,
+  pipe
 } from 'ramda';
 import {
   matchUnitThousand,
@@ -46,12 +47,29 @@ export const getUnit = formatStr => {
 };
 
 /**
+ * 將結果統一格式輸出
+ * @private
+ * @param {Array<string,string>} result 結果
+ * @param {string} unit 單位
+ * @return {Array<string,string,string>} 整數跟小數還有單位
+ */
+const _resultCompile = (result, unit = '') => [
+  ...ifElse(
+    pipe(length, equals(2)),
+    identity,
+    append('')
+  )(result),
+  unit
+];
+
+/**
  * 計算
  * @param {$Values<unitConstant>} unit 單位代號
  * @param {string} numberStr
- * @return {Array<number, number>} 整數跟小數
+ * @return {Array<string,string,string?>} 整數跟小數還有單位
  * @example
  *   computeUnit('k', '100200') => [100,200]
+ *   computeUnit('g', '100200') => [100,200,'K']
  */
 export const computeUnit = (unit, numberStr) => {
   switch (unit) {
@@ -63,18 +81,9 @@ export const computeUnit = (unit, numberStr) => {
       return split('.', toString(divide(+numberStr, 1000000000)));
     case 'g':
       if (+numberStr > 1000000000)
-        return [
-          ...ifElse(pipe(length, equals(2)), identity, append('0'))(computeUnit('b', numberStr)),
-          'B'
-        ];
+        return _resultCompile(computeUnit('b', numberStr), 'B');
       if (+numberStr > 1000000)
-        return [
-          ...ifElse(pipe(length, equals(2)), identity, append('0'))(computeUnit('m', numberStr)),
-          'M'
-        ];
-      return [
-        ...ifElse(pipe(length, equals(2)), identity, append('0'))(computeUnit('k', numberStr)),
-        'K'
-      ];
+        return _resultCompile(computeUnit('m', numberStr), 'M');
+      return _resultCompile(computeUnit('k', numberStr), 'K');
   }
 };
