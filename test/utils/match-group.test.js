@@ -32,12 +32,6 @@ describe('matchGroup', () => {
       $1: 'ddd',
       $2: 'c(c)c'
     });
-
-    expect(matchGroup('aaa(ddd)bbb(c(c)c)')).to.be.eql({
-      origin: 'aaa$1bbb$2',
-      $1: 'ddd',
-      $2: 'c(c)c'
-    });
   });
 
   it('錯誤處理', () => {
