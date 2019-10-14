@@ -31,24 +31,43 @@ const matchGroup = formatStr => {
   let group = [],
     leftBrackets = [],
     rightBrackets = [],
+    leftMidBrackets = [],
     slitFormatStr = split('', formatStr);
 
   /* 統計字元 */
   addIndex(forEach)((str, idx) => {
     switch (str) {
       case '(':
+        /* 在中括號內 */
+        if (leftMidBrackets.length > 0)
+          break;
         leftBrackets = append(idx, leftBrackets);
         break;
       case ')':
+        /* 在中括號內 */
+        if (leftMidBrackets.length > 0)
+          break;
+        /* 沒有左括號 */
         if (leftBrackets.length === 0) throw '格式錯誤';
         if (leftBrackets.length === rightBrackets.length + 1)
           rightBrackets = append(idx, rightBrackets);
         else leftBrackets = init(leftBrackets);
         break;
+      case '[':
+        leftMidBrackets = append(idx, leftMidBrackets);
+        break;
+      case ']':
+        /* 沒有左中括號 */
+        if (leftMidBrackets.length === 0)
+          throw '格式錯誤';
+        if (leftMidBrackets.length > 0)
+          leftMidBrackets = init(leftMidBrackets);
+        break;
     }
   }, slitFormatStr);
 
   /* 例外處理 */
+  if (leftMidBrackets.length > 0) throw '格式錯誤';
   if (leftBrackets.length !== rightBrackets.length) throw '格式錯誤';
 
   /* 包裝分類 */
