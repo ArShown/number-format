@@ -40,10 +40,10 @@ const matchGroup = formatStr => {
         leftBrackets = append(idx, leftBrackets);
         break;
       case ')':
-        if (leftBrackets.length === (rightBrackets.length + 1))
+        if (leftBrackets.length === 0) throw '格式錯誤';
+        if (leftBrackets.length === rightBrackets.length + 1)
           rightBrackets = append(idx, rightBrackets);
-        else
-          leftBrackets = init(leftBrackets);
+        else leftBrackets = init(leftBrackets);
         break;
     }
   }, slitFormatStr);
