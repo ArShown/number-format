@@ -5,6 +5,7 @@ import matchDecimalLength from './match-decimal-length';
 import matchIntegerLength from './match-integer-length';
 import matchRounding from './match-rounding';
 import matchComma from './match-comma';
+import outputConversion from './output-conversion';
 import { getUnit } from './transfer-unit';
 
 /* 把formatStr解析成要轉換的格式條件 */
@@ -15,19 +16,23 @@ const decodeToObjByStr = formatStr => number => {
     integer: numberToInteger(numberStr),
     decimal: numberToDecimal(numberStr)
   };
+  /* 處理中括號 */
+  const { outputTxt, filterStr } = outputConversion(formatStr);
 
   return {
     origin,
     /* 單位：unitConstant｜null */
-    unit: getUnit(formatStr),
+    unit: getUnit(filterStr),
     /* 整數位數 */
-    integerLength: matchIntegerLength(formatStr),
+    integerLength: matchIntegerLength(filterStr),
     /* 小數點位數 */
-    decimalLength: matchDecimalLength(formatStr),
+    decimalLength: matchDecimalLength(filterStr),
     /* r 四捨五入 */
-    isRound: matchRounding(formatStr),
+    isRound: matchRounding(filterStr),
     /* c 逗號 */
-    isComma: matchComma(formatStr)
+    isComma: matchComma(filterStr),
+    /* 輸出格式 */
+    outputTxt
   };
 };
 
