@@ -254,6 +254,51 @@ describe('number_format', () => {
     });
   });
 
+  describe('(): 群組', () => {
+    it("(1234567.89, '(0m)M & (0k)K') => '1M & 1234K'", () => {
+      expect(number_format(1234567.89, '(0m)M & (0k)K')).to.be.eql(
+        '1M & 1234K'
+      );
+    });
+    it("(123456.789, '(1m)M,(0k)K') => '0M,123K'", () => {
+      expect(number_format(123456.789, '(1m)M,(0k)K')).to.be.eql(
+        '0M,123K'
+      );
+    });
+    it("(1234567.89, '(1b)B,(-3m)M,(-3k)K,(-3.2)') => '1M,234K,567.89'", () => {
+      expect(number_format(1234567.89, '(0b)B,(-3m)M,(-3k)K,(-3.2)')).to.be.eql(
+        'B,1M,234K,567.89'
+      );
+    });
+    it("(123456789.123, '(0mM)[k](0k)') => '123[k]123456'", () => {
+      expect(number_format(123456789.123, '(0mM)[k](0k)')).to.be.eql(
+        '123[k]123456'
+      );
+    });
+    it("(1000, '[ABC](0k)') => '[ABC]1'", () => {
+      expect(number_format(1000, '[ABC](0k)')).to.be.eql(
+        '[ABC]1'
+      );
+    });
+    it("(1000, 'ABC(0k)') => 'ABC1'", () => {
+      expect(number_format(1000, 'ABC(0k)')).to.be.eql(
+        'ABC1'
+      );
+    });
+    it("多層的處理", () => {
+      expect(number_format(1000, '(1k(1k))1k')).to.be.eql(
+        '1k11k'
+      );
+      expect(number_format(1000, '(1k)(1k)(1k)')).to.be.eql(
+        '111'
+      );
+      expect(number_format(1000, '1k(1k)1k')).to.be.eql(
+        '1k11k'
+      );
+    });
+
+  });
+
   describe('建構式方式', () => {
     let number;
     before(() => {
@@ -269,6 +314,9 @@ describe('number_format', () => {
       expect(number.format('4c.2')).to.be.eql('123,456.78');
       expect(number.format('c4.2')).to.be.eql('123,456.78');
       expect(number.format('4.2c')).to.be.eql('123,456.78');
+    });
+    it('變更格式： 1k', () => {
+      expect(number.format('1k')).to.be.eql('123');
     });
   });
 });
