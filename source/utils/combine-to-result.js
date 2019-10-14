@@ -1,4 +1,4 @@
-import { join, slice, takeLast } from 'ramda';
+import { join, slice, takeLast, clone } from 'ramda';
 import numberToInteger from './number-to-integer';
 import numberToDecimal from './number-to-decimal';
 import paddingRight from './padding-right';
@@ -24,9 +24,46 @@ const combineToResult = formatObject => {
   /* 處理單位 */
   let greatUnit = '';
   if (unit !== null) {
+    if (unit === 'a') {
+      /* 單位如果是 a 要特別處理 */
+      let numberToCount = +clone(number),
+        resultBillion = '',
+        resultMillion = '',
+        resultThousand = '';
+
+      // 先拿 billion
+      if (numberToCount >= 1000000000) {
+        const billion = computeUnit('b', '' + numberToCount);
+        resultBillion = billion[0] !== '0'
+          ? (isComma ? commaString(billion[0]) : billion[0]) + 'B '
+          : '';
+        numberToCount = numberToCount % 1000000000;
+        /* 寫入百萬預設值 */
+        resultMillion = '0M ';
+      }
+
+      if (numberToCount >= 1000000) {
+        // 再拿 million
+        const million = computeUnit('m', '' + numberToCount);
+        resultMillion = million[0] === '0' && resultBillion === ''
+          ? ''
+          : million[0] + 'M ';
+        numberToCount = numberToCount % 1000000;
+      }
+
+      // 再拿 thousand
+      const thousand = computeUnit('k', '' + numberToCount);
+      resultThousand = `${thousand[0]}K`;
+
+      return join('', [
+        resultBillion,
+        resultMillion,
+        resultThousand
+      ]);
+    }
     /* 更新資料 */
     [integer, decimal, greatUnit = ''] = computeUnit(unit, number);
-    number = `${integer}.${decimal}`;
+    number = `${integer}${decimal !== '' ? '.' + decimal : ''}`;
   }
 
   /* 處理四捨五入 */
@@ -48,11 +85,11 @@ const combineToResult = formatObject => {
       ? ''
       : /* 處理正負數 */
       integerLength >= 0
-      ? /* 處理補零 */
+        ? /* 處理補零 */
         integerLength < integer.length
-        ? integer
-        : paddingLeft(integerLength, integer)
-      : takeLast(Math.abs(integerLength), integer);
+          ? integer
+          : paddingLeft(integerLength, integer)
+        : takeLast(Math.abs(integerLength), integer);
 
   /* 處理小數點後數字 */
   const compileDecimal =
@@ -65,9 +102,10 @@ const combineToResult = formatObject => {
   return join('', [
     /* 處理整數 */
     isComma ? commaString(compileInteger) : compileInteger,
-    greatUnit,
     /* 小數點 */
-    compileDecimal !== '' ? '.' + compileDecimal : ''
+    compileDecimal !== '' ? '.' + compileDecimal : '',
+    /* 單位放最後面: 如果都是空值就不顯示 */
+    compileInteger === '' && compileDecimal === '' ? '' : greatUnit
   ]);
 };
 

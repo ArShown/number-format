@@ -6,7 +6,12 @@ import {
   divide,
   split,
   contains,
-  toString
+  toString,
+  ifElse,
+  length,
+  identity,
+  append,
+  pipe
 } from 'ramda';
 import {
   matchUnitThousand,
@@ -15,6 +20,8 @@ import {
   matchUnitAll,
   matchUnitGreat
 } from './match-unit';
+import numberToInteger from './number-to-integer';
+import numberToDecimal from './number-to-decimal';
 
 const unitConstant = ['a', 'g', 'k', 'm', 'b'];
 
@@ -42,38 +49,55 @@ export const getUnit = formatStr => {
 };
 
 /**
+ * 將結果統一格式輸出
+ * @private
+ * @param {Array<string,string>} result 結果
+ * @param {string} unit 單位
+ * @return {Array<string,string,string>} 整數跟小數還有單位
+ */
+const _resultCompile = (result, unit = '') => [
+  ...ifElse(
+    pipe(length, equals(2)),
+    identity,
+    append('')
+  )(result),
+  unit
+];
+
+/**
  * 計算
  * @param {$Values<unitConstant>} unit 單位代號
  * @param {string} numberStr
- * @return {Array<number, number>} 整數跟小數
+ * @return {Array<string,string,string?>} 整數跟小數還有單位
  * @example
  *   computeUnit('k', '100200') => [100,200]
+ *   computeUnit('g', '100200') => [100,200,'K']
  */
 export const computeUnit = (unit, numberStr) => {
   switch (unit) {
     case 'k':
-      return split('.', toString(divide(+numberStr, 1000)));
+      const k = toString(divide(+numberStr, 1000));
+      return [
+        numberToInteger(k),
+        numberToDecimal(k)
+      ];
     case 'm':
-      return split('.', toString(divide(+numberStr, 1000000)));
+      const m = toString(divide(+numberStr, 1000000));
+      return [
+        numberToInteger(m),
+        numberToDecimal(m)
+      ];
     case 'b':
-      return split('.', toString(divide(+numberStr, 1000000000)));
+      const b = toString(divide(+numberStr, 1000000000));
+      return [
+        numberToInteger(b),
+        numberToDecimal(b)
+      ];
     case 'g':
       if (+numberStr > 1000000000)
-        return [
-          ...computeUnit('b', numberStr),
-          ...(computeUnit('b', numberStr).length === 2 ? [] : ['0']),
-          'B'
-        ];
+        return _resultCompile(computeUnit('b', numberStr), 'B');
       if (+numberStr > 1000000)
-        return [
-          ...computeUnit('m', numberStr),
-          ...(computeUnit('m', numberStr).length === 2 ? [] : ['0']),
-          'M'
-        ];
-      return [
-        ...computeUnit('k', numberStr),
-        ...(computeUnit('k', numberStr).length === 2 ? [] : ['0']),
-        'K'
-      ];
+        return _resultCompile(computeUnit('m', numberStr), 'M');
+      return _resultCompile(computeUnit('k', numberStr), 'K');
   }
 };
