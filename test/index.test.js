@@ -213,7 +213,9 @@ describe('number_format', () => {
       expect(number_format(123456789.123, '5.3gr')).to.be.eql('00123.457M');
     });
     it("(1234567890000.123, '0.3grc') => '1,234.568B'", () => {
-      expect(number_format(1234567890000.123, '0.3grc')).to.be.eql('1,234.568B');
+      expect(number_format(1234567890000.123, '0.3grc')).to.be.eql(
+        '1,234.568B'
+      );
     });
   });
 
@@ -226,6 +228,29 @@ describe('number_format', () => {
     });
     it("(100, 'a') => '0K'", () => {
       expect(number_format(100, 'a')).to.be.eql('0K');
+    });
+  });
+
+  describe('[]: 字串', () => {
+    it("(123456789.123, '[NTD: ]0k[$]') => 'NTD: 123456$'", () => {
+      expect(number_format(123456789.123, '[NTD: ]0k[$]')).to.be.eql(
+        'NTD: 123456$'
+      );
+    });
+    it("(1123456.789, '1.4ckm[km]') => '1,123.4567km'", () => {
+      expect(number_format(1123456.789, '1.4ckm[km]')).to.be.eql(
+        '1,123.4567km'
+      );
+    });
+    it("(123456.789, '-4.2c[(千)]') => '3,456.78(千)'", () => {
+      expect(number_format(123456.789, '-4.2c[(千)]')).to.be.eql(
+        '3,456.78(千)'
+      );
+    });
+    it("不足位補零 (123456789, '[Amount: $]12c') => 'Amount: $000,123,456,789'", () => {
+      expect(number_format(123456789, '[Amount: $]12c')).to.be.eql(
+        'Amount: $000,123,456,789'
+      );
     });
   });
 

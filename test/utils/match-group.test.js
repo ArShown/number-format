@@ -27,9 +27,16 @@ describe('matchGroup', () => {
       origin: 'bbb$1',
       $1: 'ccc'
     });
+    expect(matchGroup('aaa(ddd)bbb(c(c)c)')).to.be.eql({
+      origin: 'aaa$1bbb$2',
+      $1: 'ddd',
+      $2: 'c(c)c'
+    });
   });
 
   it('錯誤處理', () => {
+    expect(matchGroup, 'aa)a)d').to.throw();
+    expect(matchGroup, 'aa)a(d').to.throw();
     expect(matchGroup, '(((aaa)').to.throw();
     expect(matchGroup, '(((aaa)))))').to.throw();
     expect(matchGroup, '(aaa(bbb(ccc))ddd)eee)').to.throw();

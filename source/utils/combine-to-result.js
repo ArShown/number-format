@@ -1,9 +1,10 @@
-import { join, slice, takeLast, clone } from 'ramda';
+import { join, slice, takeLast, clone, replace } from 'ramda';
 import numberToInteger from './number-to-integer';
 import numberToDecimal from './number-to-decimal';
 import paddingRight from './padding-right';
 import paddingLeft from './padding-left';
 import commaString from './comma-string';
+import { REPLACE_RESULT } from './output-conversion';
 import { computeUnit } from './transfer-unit';
 
 const combineToResult = formatObject => {
@@ -18,7 +19,9 @@ const combineToResult = formatObject => {
     /* r 四捨五入 */
     isRound,
     /* c 逗號 */
-    isComma
+    isComma,
+    /* 輸出格式 */
+    outputTxt
   } = formatObject;
 
   /* 處理單位 */
@@ -34,9 +37,10 @@ const combineToResult = formatObject => {
       // 先拿 billion
       if (numberToCount >= 1000000000) {
         const billion = computeUnit('b', '' + numberToCount);
-        resultBillion = billion[0] !== '0'
-          ? (isComma ? commaString(billion[0]) : billion[0]) + 'B '
-          : '';
+        resultBillion =
+          billion[0] !== '0'
+            ? (isComma ? commaString(billion[0]) : billion[0]) + 'B '
+            : '';
         numberToCount = numberToCount % 1000000000;
         /* 寫入百萬預設值 */
         resultMillion = '0M ';
@@ -45,9 +49,8 @@ const combineToResult = formatObject => {
       if (numberToCount >= 1000000) {
         // 再拿 million
         const million = computeUnit('m', '' + numberToCount);
-        resultMillion = million[0] === '0' && resultBillion === ''
-          ? ''
-          : million[0] + 'M ';
+        resultMillion =
+          million[0] === '0' && resultBillion === '' ? '' : million[0] + 'M ';
         numberToCount = numberToCount % 1000000;
       }
 
@@ -55,11 +58,7 @@ const combineToResult = formatObject => {
       const thousand = computeUnit('k', '' + numberToCount);
       resultThousand = `${thousand[0]}K`;
 
-      return join('', [
-        resultBillion,
-        resultMillion,
-        resultThousand
-      ]);
+      return join('', [resultBillion, resultMillion, resultThousand]);
     }
     /* 更新資料 */
     [integer, decimal, greatUnit = ''] = computeUnit(unit, number);
@@ -85,11 +84,11 @@ const combineToResult = formatObject => {
       ? ''
       : /* 處理正負數 */
       integerLength >= 0
-        ? /* 處理補零 */
+      ? /* 處理補零 */
         integerLength < integer.length
-          ? integer
-          : paddingLeft(integerLength, integer)
-        : takeLast(Math.abs(integerLength), integer);
+        ? integer
+        : paddingLeft(integerLength, integer)
+      : takeLast(Math.abs(integerLength), integer);
 
   /* 處理小數點後數字 */
   const compileDecimal =
@@ -99,7 +98,8 @@ const combineToResult = formatObject => {
       ? slice(0, decimalLength, decimal)
       : paddingRight(decimalLength, decimal);
 
-  return join('', [
+  /* 數字解析結果 */
+  const result = join('', [
     /* 處理整數 */
     isComma ? commaString(compileInteger) : compileInteger,
     /* 小數點 */
@@ -107,6 +107,8 @@ const combineToResult = formatObject => {
     /* 單位放最後面: 如果都是空值就不顯示 */
     compileInteger === '' && compileDecimal === '' ? '' : greatUnit
   ]);
+
+  return outputTxt ? replace(REPLACE_RESULT, result, outputTxt) : result;
 };
 
 export default combineToResult;
