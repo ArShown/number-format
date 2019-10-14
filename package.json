@@ -1,21 +1,24 @@
 {
-  "name": "number-converter",
+  "name": "tiny-number-converter",
   "version": "1.0.0",
   "description": "簡易的數值轉換庫",
   "main": "src/index",
   "repository": {
     "type": "git",
-    "url": "https://github.com/ArShown/number-format"
+    "url": "https://github.com/ArShown/tiny-number-converter"
   },
-  "homepage": "https://github.com/ArShown/number-format",
+  "homepage": "https://github.com/ArShown/tiny-number-converter",
   "scripts": {
-    "build:src": "BABEL_ENV=src babel source --out-dir src",
+    "build": "BABEL_ENV=src babel source --out-dir src",
     "test": "BABEL_ENV=src mocha --opts ./.mochaopts",
     "test:watch": "BABEL_ENV=src mocha --watch --opts ./.mochaopts",
     "precommit": "lint-staged"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
+  "files": [
+    "src"
+  ],
   "dependencies": {
     "@babel/cli": "^7.6.2",
     "@babel/core": "^7.6.2",
