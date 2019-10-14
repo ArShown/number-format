@@ -80,8 +80,8 @@ const combineToResult = formatObject => {
 
   /* 處理整數 */
   const compileInteger =
-    /* 空字串回傳空 */
-    integerLength === Infinity
+    /* 空字串回傳空 || 最低位數為0，整數為零而且沒有小數 */
+    (integerLength === Infinity || (integerLength === 0 && integer === '0' && decimalLength === 0))
       ? ''
       : /* 處理正負數 */
       integerLength >= 0
