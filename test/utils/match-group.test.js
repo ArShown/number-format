@@ -34,11 +34,36 @@ describe('matchGroup', () => {
     });
   });
 
+  it('略過中括號', () => {
+    expect(matchGroup('[ABC](0k)')).to.be.eql({
+      origin: '[ABC]$1',
+      $1: '0k'
+    });
+    expect(matchGroup('[(ABC)](0k)')).to.be.eql({
+      origin: '[(ABC)]$1',
+      $1: '0k'
+    });
+    expect(matchGroup('[([ABC])](0k)')).to.be.eql({
+      origin: '[([ABC])]$1',
+      $1: '0k'
+    });
+    expect(matchGroup('([ABC])(0k)')).to.be.eql({
+      origin: '$1$2',
+      $1: '[ABC]',
+      $2: '0k'
+    });
+  });
+
   it('錯誤處理', () => {
+    expect(matchGroup, '(aa)a)d').to.throw();
     expect(matchGroup, 'aa)a)d').to.throw();
     expect(matchGroup, 'aa)a(d').to.throw();
     expect(matchGroup, '(((aaa)').to.throw();
     expect(matchGroup, '(((aaa)))))').to.throw();
     expect(matchGroup, '(aaa(bbb(ccc))ddd)eee)').to.throw();
+    expect(matchGroup, '[aa[a])]aa').to.throw();
+    expect(matchGroup, '[aa[(a)]aa').to.throw();
+    expect(matchGroup, '([ABC)](0k)').to.throw();
+    expect(matchGroup, '[[456](123)').to.throw();
   });
 });
