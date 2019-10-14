@@ -3,8 +3,14 @@ import number_format from '../source/index';
 
 describe('number_format', () => {
   describe('整數', () => {
-    it("0 就是不處理 (123456.789, '0') => '123456'", () => {
+    it("最小位數為0 (123456.789, '0') => '123456'", () => {
       expect(number_format(123456.789, '0')).to.be.eql('123456');
+    });
+    it("最小位數為0，若輸出為零就不顯示 (0, '0') => ''", () => {
+      expect(number_format(0, '0')).to.be.eql('');
+    });
+    it("不足位補零 (0, '1') => '0'", () => {
+      expect(number_format(0, '1')).to.be.eql('0');
     });
     it("不足位補零 (123456.789, '3') => '123456'", () => {
       expect(number_format(123456.789, '3')).to.be.eql('123456');
@@ -117,8 +123,8 @@ describe('number_format', () => {
   });
 
   describe('m: 百萬', () => {
-    it("(123456.789, '0m') => '0'", () => {
-      expect(number_format(123456.789, '0m')).to.be.eql('0');
+    it("(123456.789, '0m') => ''", () => {
+      expect(number_format(123456.789, '0m')).to.be.eql('');
     });
 
     it("(1123456.789, '0m') => '1'", () => {
@@ -155,12 +161,16 @@ describe('number_format', () => {
   });
 
   describe('b: 十億', () => {
-    it("(123456.789, '0b') => '0'", () => {
-      expect(number_format(123456.789, '0b')).to.be.eql('0');
+    it("(123456.789, '0b') => ''", () => {
+      expect(number_format(123456.789, '0b')).to.be.eql('');
     });
 
-    it("(123456000.789, '0b') => '0'", () => {
-      expect(number_format(123456000.789, '0b')).to.be.eql('0');
+    it("(123456.789, '1b') => '0'", () => {
+      expect(number_format(123456.789, '1b')).to.be.eql('0');
+    });
+
+    it("(123456000.789, '0b') => ''", () => {
+      expect(number_format(123456000.789, '0b')).to.be.eql('');
     });
 
     it("(1123456000.789, '0b') => '1'", () => {
@@ -185,7 +195,7 @@ describe('number_format', () => {
       expect(number_format(123456.789, '0g')).to.be.eql('123K');
     });
     it("(100, '0g') => '0K'", () => {
-      expect(number_format(100, '0g')).to.be.eql('0K');
+      expect(number_format(100, '0g')).to.be.eql('');
     });
     it("(123456.789, '0.0g') => '123.456789K'", () => {
       expect(number_format(123456.789, '0.0g')).to.be.eql('123.456789K');
