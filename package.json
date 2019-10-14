@@ -1,8 +1,13 @@
 {
-  "name": "number-format",
+  "name": "number-converter",
   "version": "1.0.0",
-  "description": "",
+  "description": "簡易的數值轉換庫",
   "main": "src/index",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArShown/number-format"
+  },
+  "homepage": "https://github.com/ArShown/number-format",
   "scripts": {
     "build:src": "BABEL_ENV=src babel source --out-dir src",
     "test": "BABEL_ENV=src mocha --opts ./.mochaopts",

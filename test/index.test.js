@@ -302,10 +302,10 @@ describe('number_format', () => {
   describe('建構式方式', () => {
     let number;
     before(() => {
-      number = new number_format(123456.789, '0');
+      number = new number_format(123456.789);
     });
     it('取得結果', () => {
-      expect(number.value()).to.be.eql('123456');
+      expect(number.value()).to.be.eql('123,456.79');
     });
     it('變更格式： 0.4', () => {
       expect(number.format('0.4')).to.be.eql('123456.7890');
