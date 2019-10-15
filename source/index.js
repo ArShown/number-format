@@ -1,6 +1,6 @@
 import utilHandler from './utils';
 
-const number_format = function (number, formatStr = '0.2cr') {
+const number_format = function (number, formatStr = '1.2cr') {
   /* 檢查是不是建構式方式 */
   const isConstructor = this instanceof number_format;
 
@@ -18,7 +18,7 @@ number_format.prototype.value = function value() {
   return this._result;
 };
 
-number_format.prototype.format = function format(formatStr = '0.2cr') {
+number_format.prototype.format = function format(formatStr = '1.2cr') {
   return this._format(formatStr);
 };
 
