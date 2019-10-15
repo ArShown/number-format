@@ -9,7 +9,7 @@ import { computeUnit } from './transfer-unit';
 
 const combineToResult = formatObject => {
   let {
-    origin: { number, integer, decimal },
+    origin: { number, integer, decimal, sign },
     /* 單位 */
     unit,
     /* 整數位數 */
@@ -100,6 +100,8 @@ const combineToResult = formatObject => {
 
   /* 數字解析結果 */
   const result = join('', [
+    /* 負號 */
+    integerLength < 0 ? '' : sign,
     /* 處理整數 */
     isComma ? commaString(compileInteger) : compileInteger,
     /* 小數點 */

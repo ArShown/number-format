@@ -10,9 +10,10 @@ import { getUnit } from './transfer-unit';
 
 /* 把formatStr解析成要轉換的格式條件 */
 const decodeToObjByStr = formatStr => number => {
-  const numberStr = toString(number);
+  const numberStr = toString(Math.abs(number));
   const origin = {
     number: numberStr,
+    sign: number >= 0 ? '' : '-',
     integer: numberToInteger(numberStr),
     decimal: numberToDecimal(numberStr)
   };
