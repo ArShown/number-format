@@ -1,6 +1,6 @@
 {
   "name": "tiny-number-converter",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "簡易的數值轉換庫",
   "main": "src/index",
   "repository": {

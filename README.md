@@ -6,7 +6,7 @@ Little library for numerical format conversion.
 ### Usage
 
 
-```javascript=
+```js
 /* es6 引入 */
 import numberFromat from 'tiny-number-converter';
 
@@ -32,17 +32,17 @@ myNumber.format(newFormatStr);
 
 | 格式  | 名稱       | 說明 |
 |----|---------------|------------------------------------------------------|
-| /d  | Integer       | 取整數位數，不足位補零，無條件捨去，空字串回傳空字串 |
-| ./d | Decimal  | 取小數點後位數，無條件捨去                         |
-| r  | Rounding      | 四捨五入                                           |
-| c  | Comma         | 加上逗號                                           |
-| k  | Kilo          | 以千為單位取值                                     |
-| m  | Million       | 以百萬為單位取值                                   |
-| b  | Billion       | 以十億為單位取值                                   |
-| g  | Greatest      | 自動換算最大單位，輸出包含單位                                   |
-| a  | All           | 換算最大之後的所有單位                             |
-| [] | Output        | 輸出[]裡面文字                                     |
-| () | Grouping      | 群組                                               |
+| /d  | [Integer](#Integer)       | 取整數位數，不足位補零，無條件捨去，空字串回傳空字串 |
+| ./d | [Decimal](#Decimal)  | 取小數點後位數，無條件捨去                         |
+| r  | [Rounding](#Rounding)      | 四捨五入                                           |
+| c  | [Comma](#Comma)         | 加上逗號                                           |
+| k  | [Kilo](#Kilo-Million-Billion)         | 以千為單位取值                                     |
+| m  | [Million](#Kilo-Million-Billion)
+| b  | [Billion](#Kilo-Million-Billion)       | 以十億為單位取值                                   |
+| g  | [Greatest](#Greatest)     | 自動換算最大單位，輸出包含單位                                   |
+| a  | [All](#All)           | 換算最大之後的所有單位                             |
+| [] | [Output](#Output)        | 輸出[]裡面文字                                     |
+| () | [Grouping](#Grouping)      | 群組                                               |
 
 ### Example
 
