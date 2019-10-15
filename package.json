@@ -22,7 +22,7 @@
   "files": [
     "src"
   ],
-  "dependencies":{
+  "dependencies": {
     "ramda": "^0.26.1"
   },
   "devDependencies": {
