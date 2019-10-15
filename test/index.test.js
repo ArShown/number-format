@@ -24,6 +24,20 @@ describe('number_format', () => {
     it("空字串回傳空 (123456.789, '') => ''", () => {
       expect(number_format(123456.789, '')).to.be.eql('');
     });
+
+    it("(-500, '-5c') => '-00'", () => {
+      expect(number_format(-500, '-5c')).to.be.eql('500');
+    });
+    it("(-500, '-2c') => '-00'", () => {
+      expect(number_format(-500, '-2')).to.be.eql('00');
+    });
+
+    it("(-500, '0c') => '-500'", () => {
+      expect(number_format(-500, '0c')).to.be.eql('-500');
+    });
+    it("(-5000, '0c') => '-5,000'", () => {
+      expect(number_format(-5000, '0c')).to.be.eql('-5,000');
+    });
   });
 
   describe('小數', () => {
