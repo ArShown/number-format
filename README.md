@@ -8,13 +8,13 @@ Little library for numerical format conversion.
 
 ```js
 /* es6 引入 */
-import numberFromat from 'tiny-number-converter';
+import numberFormat from 'tiny-number-converter';
 
 /* 方法函式 */
-numberFromat(number[, formatStr]);
+numberFormat(number[, formatStr]);
 
 /* 建構式方式 */
-var myNumber = new numberFromat(number);
+var myNumber = new numberFormat(number);
 /* 印出轉換結果 */
 myNumber.value();
 /* 變更轉換格式，並印出結果 */

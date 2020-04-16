@@ -5,7 +5,7 @@ const matchDecimalLength = formatStr => {
   if (isNil(matchDecimal))
     return 0;
 
-  const result = ~~slice(1, Infinity, matchDecimal);
+  const result = parseFloat(slice(1, Infinity, matchDecimal));
 
   return (result === 0) ? Infinity : result;
 };

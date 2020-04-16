@@ -3,9 +3,7 @@ import utilHandler from './utils';
 const number_format = function (number, formatStr = '1.2cr') {
   /* 檢查是不是建構式方式 */
   const isConstructor = this instanceof number_format;
-
   const _self = isConstructor ? this : {};
-
   _self._number = number;
   _self._format = formatStr => utilHandler(formatStr, _self._number);
   _self._result = _self._format(formatStr);
